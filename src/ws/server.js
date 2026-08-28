@@ -13,7 +13,7 @@ function broadcast(wss, payload) {
 }
 
 export function attachWebSocketServer(server) {
-    const wss = new WebSocketServer({ server, path: '/ws', payload: 1024 * 1024 });
+    const wss = new WebSocketServer({ server, path: '/ws', maxPayload: 1024 * 1024 });
 
     wss.on('connection', (socket) => {
         sendJson(socket, { type: 'welcome' });

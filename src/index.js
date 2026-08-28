@@ -26,7 +26,7 @@ console.log('broadcastMatchCreated type at startup:', typeof app.locals.broadcas
 
 
 server.listen(PORT, HOST, () => {
-  const baseUrl = HOST === '0.0.0.0' ? `http://localhost:${PORT}` : `http://${HOST}/${PORT}`
+  const baseUrl = HOST === '0.0.0.0' ? `http://localhost:${PORT}` : `http://${HOST}:${PORT}`
   console.log(`Server is running on ${baseUrl}`);
   console.log(`WebSocketServer is running on ${baseUrl.replace('http', 'ws' )}/ws`)
 });
