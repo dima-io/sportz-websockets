@@ -1,5 +1,5 @@
 import { createMany, desc } from 'drizzle-orm';
-import Router from 'express';
+import { Router } from 'express';
 import { createMatchSchema, listMatchesQuerySchema } from '../validation/matches.js';
 import { db } from '../db/db.js';
 import { matches } from '../db/schema.js';
@@ -45,6 +45,13 @@ matchesRoutes.post('/', async (req, res) => {
             awayScore: awayScore ?? 0,
             status: getMatchStatus(startTime, endTime),
         }).returning();
+
+        console.log('broadcastMatchCreated exists?', typeof res.app.locals.broadcastMatchCreated)
+
+        if (res.app.locals.broadcastMatchCreated) {
+            console.log('broadcast called');
+            res.app.locals.broadcastMatchCreated(event)
+        }
 
         res.status(201).json({ data: event });
     } catch (error) {
