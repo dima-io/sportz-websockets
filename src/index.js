@@ -1,8 +1,10 @@
 import express from "express";
 import matchesRoutes from "./routes/matches.js";
+import commentaryRouter from "./routes/commentary.js";
 import http from 'http'
 import { attachWebSocketServer } from "./ws/server.js";
 import { securityMiddleware } from "./arcject.js";
+
 
 
 
@@ -22,9 +24,12 @@ app.get("/", (req, res) => {
 app.use(securityMiddleware())
 
 app.use("/matches", matchesRoutes);
-const { broadcastMatchCreated } = attachWebSocketServer(server)
+app.use("/matches/:id/commentary", commentaryRouter);
 
-app.locals.broadcastMatchCreated = broadcastMatchCreated
+const { broadcastMatchCreated, broadcastCommentary } = attachWebSocketServer(server)
+
+app.locals.broadcastMatchCreated = broadcastMatchCreated;
+app.locals.broadcastCommentary = broadcastCommentary;
 
 console.log('broadcastMatchCreated type at startup:', typeof app.locals.broadcastMatchCreated)
 

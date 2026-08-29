@@ -4,6 +4,7 @@ import { createMatchSchema, listMatchesQuerySchema } from '../validation/matches
 import { db } from '../db/db.js';
 import { matches } from '../db/schema.js';
 import { getMatchStatus } from '../utils/match-status.js'
+import { serial } from 'drizzle-orm/mysql-core';
 
 const matchesRoutes = Router();
 
@@ -46,10 +47,7 @@ matchesRoutes.post('/', async (req, res) => {
             status: getMatchStatus(startTime, endTime),
         }).returning();
 
-        console.log('broadcastMatchCreated exists?', typeof res.app.locals.broadcastMatchCreated)
-
         if (res.app.locals.broadcastMatchCreated) {
-            console.log('broadcast called');
             res.app.locals.broadcastMatchCreated(event)
         }
 
