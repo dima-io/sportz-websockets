@@ -4,6 +4,7 @@ import {
   uuid,
   varchar,
   integer,
+  serial,      
   timestamp,
   jsonb,
 } from 'drizzle-orm/pg-core';

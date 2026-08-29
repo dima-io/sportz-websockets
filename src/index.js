@@ -1,7 +1,10 @@
 import express from "express";
 import matchesRoutes from "./routes/matches.js";
+import commentaryRouter from "./routes/commentary.js";
 import http from 'http'
 import { attachWebSocketServer } from "./ws/server.js";
+import { securityMiddleware } from "./arcject.js";
+
 
 
 
@@ -17,10 +20,16 @@ app.get("/", (req, res) => {
   res.send("Sportz API is running");
 });
 
-app.use("/matches", matchesRoutes);
-const { broadcastMatchCreated } = attachWebSocketServer(server)
 
-app.locals.broadcastMatchCreated = broadcastMatchCreated
+app.use(securityMiddleware())
+
+app.use("/matches", matchesRoutes);
+app.use("/matches/:id/commentary", commentaryRouter);
+
+const { broadcastMatchCreated, broadcastCommentary } = attachWebSocketServer(server)
+
+app.locals.broadcastMatchCreated = broadcastMatchCreated;
+app.locals.broadcastCommentary = broadcastCommentary;
 
 console.log('broadcastMatchCreated type at startup:', typeof app.locals.broadcastMatchCreated)
 

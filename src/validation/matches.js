@@ -29,7 +29,7 @@ export const listMatchesQuerySchema = z.object({
  * `id` is required and coerced to a positive integer.
  */
 export const matchIdParamSchema = z.object({
-  id: z.coerce.number().int().positive(),
+  id: z.string().uuid(),
 });
 
 /**
